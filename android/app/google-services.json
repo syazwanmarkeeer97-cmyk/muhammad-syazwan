@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "802884529859",
+    "firebase_url": "https://lab-safety-monitoring-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "lab-safety-monitoring",
+    "storage_bucket": "lab-safety-monitoring.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802884529859:android:0e8b22b06b1a4bdbb1fc76",
+        "android_client_info": {
+          "package_name": "com.example.smart_lab_safety"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLpu-fz8y7uiFWRfJOaqV7LK8cYHEGuFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
