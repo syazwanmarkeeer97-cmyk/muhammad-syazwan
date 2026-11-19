@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'Loginpage.dart';
 import 'sensor_page.dart';
 import 'history_page.dart';
 import 'alert_page.dart';
@@ -16,7 +18,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
+  // address Realtime Database
   final DatabaseReference _myDatabase = FirebaseDatabase.instanceFor(
     app: Firebase.app(),
     databaseURL:
@@ -28,20 +30,24 @@ class _DashboardPageState extends State<DashboardPage> {
   bool led = false;
   bool buzzer = false;
 
-
+  // null means reading not accept
   double? temperature;
   double? humidity;
   int? gas;
   double? distance;
 
-
+  // to make sure same with gasLimit in Arduino
   int gasLimit = 200;
 
-  String databaseStatus = 'Waiting data Firebase';
+  String databaseStatus = 'waiting data from Firebase';
 
-
+  // read data from Firebase
   void _readData() {
-    _databaseSubscription = _myDatabase.onValue.listen(
+    _databaseSubscription = _myDatabase
+        .orderByKey()
+        .endAt('temperature')
+        .onValue
+        .listen(
           (DatabaseEvent event) {
         final data = event.snapshot.value;
 
@@ -71,14 +77,14 @@ class _DashboardPageState extends State<DashboardPage> {
         if (!mounted) return;
 
         setState(() {
-          databaseStatus = 'Failed reaidng from Firebase';
+          databaseStatus = 'Failed read from Firebase';
           gas = null;
         });
       },
     );
   }
 
-
+  // send instruction from LED to Firebase
   Future<void> _setLed(bool value) async {
     try {
       await _myDatabase.child('led').set(value);
@@ -87,13 +93,13 @@ class _DashboardPageState extends State<DashboardPage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('failed to send instrudction to LED'),
+          content: Text('Failed send instruction to LED'),
         ),
       );
     }
   }
 
-  // Hantar arahan buzzer ke Firebase
+  // send instruction from buzzer to Firebase
   Future<void> _setBuzzer(bool value) async {
     try {
       await _myDatabase.child('buzzer').set(value);
@@ -102,7 +108,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed send to buzzer'),
+          content: Text('failed to send instruction to buzzer'),
         ),
       );
     }
@@ -128,6 +134,37 @@ class _DashboardPageState extends State<DashboardPage> {
         title: const Text('Smart Lab Dashboard'),
         backgroundColor: Colors.deepPurpleAccent,
         foregroundColor: Colors.black,
+
+        // Button back to  login
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Log out',
+          onPressed: () async {
+            try {
+              // Log out from Firebase
+              await FirebaseAuth.instance.signOut();
+
+              if (!context.mounted) return;
+
+              // to open login and reject page before
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Loginpage(),
+                ),
+                    (route) => false,
+              );
+            } catch (error) {
+              if (!context.mounted) return;
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Failed to log out. Try again.'),
+                ),
+              );
+            }
+          },
+        ),
       ),
 
       body: ListView(
@@ -143,7 +180,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
           const SizedBox(height: 10),
 
-
+          // Status that from  Firebase
           Card(
             color: gas == null
                 ? Colors.grey.shade200
@@ -166,16 +203,17 @@ class _DashboardPageState extends State<DashboardPage> {
               title: const Text('Gas Status'),
               subtitle: Text(
                 gas == null
-                    ? 'wai for gas reading'
+                    ? 'wait for read gas'
                     : gas! >= gasLimit
-                    ? 'Gas Alert - reading above value test'
-                    : 'Normal - value still under control',
+                    ? 'Gas Alert - reading above value testing'
+                    : 'Normal - reading under value testing',
               ),
             ),
           ),
 
           const SizedBox(height: 20),
 
+          // sensor page
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -190,6 +228,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
           const SizedBox(height: 10),
 
+          //  history page
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -204,6 +243,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
           const SizedBox(height: 10),
 
+          // alert page
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -226,6 +266,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
+          // temperature
           Card(
             child: ListTile(
               leading: const Icon(Icons.thermostat),
@@ -237,6 +278,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
+          // Humidity
           Card(
             child: ListTile(
               leading: const Icon(Icons.water_drop),
@@ -248,6 +290,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
+          // gas
           Card(
             child: ListTile(
               leading: const Icon(Icons.cloud),
@@ -259,6 +302,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
+          // Distance
           Card(
             child: ListTile(
               leading: const Icon(Icons.social_distance),
@@ -280,11 +324,12 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
+          // LED
           Card(
             child: ListTile(
               leading: const Icon(Icons.lightbulb),
               title: const Text('Warning LED'),
-              subtitle: Text(led ? ' ON' : ' OFF'),
+              subtitle: Text(led ? ' ON' : 'OFF'),
               trailing: Switch(
                 value: led,
                 onChanged: (bool value) async {
@@ -294,11 +339,12 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
+          //  buzzer
           Card(
             child: ListTile(
               leading: const Icon(Icons.notifications_active),
               title: const Text('Buzzer'),
-              subtitle: Text(buzzer ? 'ON' : ' OFF'),
+              subtitle: Text(buzzer ? ' ON' : ' OFF'),
               trailing: Switch(
                 value: buzzer,
                 onChanged: (bool value) async {
@@ -314,7 +360,7 @@ class _DashboardPageState extends State<DashboardPage> {
             child: ListTile(
               leading: Icon(Icons.info_outline),
               title: Text('ESP32'),
-              subtitle: Text('Reading from firebase'),
+              subtitle: Text('Reading from Firebase'),
             ),
           ),
         ],

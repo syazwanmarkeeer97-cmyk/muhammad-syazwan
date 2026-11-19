@@ -22,9 +22,9 @@ class _HistoryPageState extends State<HistoryPage> {
 
   List<Map<String, dynamic>> history = [];
 
-  String historyStatus = 'Menunggu sensor history';
+  String historyStatus = 'wait for sensor history';
 
-  // Baca 20 rekod terkini daripada Firebase
+  // read 20 latest record fromFirebase
   void _readHistory() {
     _historySubscription = _myDatabase
         .child('zz_history')
@@ -46,7 +46,7 @@ class _HistoryPageState extends State<HistoryPage> {
           }
         }
 
-        // Susun rekod terbaru di bahagian atas
+        // Sorting latest rekod on top section
         records.sort((a, b) {
           int timeA = 0;
           int timeB = 0;
@@ -66,9 +66,9 @@ class _HistoryPageState extends State<HistoryPage> {
           history = records;
 
           if (history.isEmpty) {
-            historyStatus = 'Belum ada rekod sensor';
+            historyStatus = 'Dont have record sensor';
           } else {
-            historyStatus = 'Memaparkan rekod terkini';
+            historyStatus = 'Display latest record';
           }
         });
       },
@@ -77,7 +77,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
         setState(() {
           history = [];
-          historyStatus = 'Gagal membaca sensor history';
+          historyStatus = 'failed to read sensor history';
         });
       },
     );
@@ -86,7 +86,7 @@ class _HistoryPageState extends State<HistoryPage> {
   // Tukar masa Firebase kepada tarikh dan masa
   String _formatTime(dynamic value) {
     if (value is! num) {
-      return 'Masa tidak tersedia';
+      return 'time not available';
     }
 
     DateTime time = DateTime.fromMillisecondsSinceEpoch(
@@ -104,7 +104,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return '$day/$month/$year  $hour:$minute:$second';
   }
 
-  // Papar -- jika bacaan tiada
+  // display if dont have reading
   String _formatValue(dynamic value, String unit) {
     if (value is! num) {
       return '--';
@@ -149,7 +149,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
           const SizedBox(height: 16),
 
-          // Paparkan setiap rekod sensor
+          // display  recorded sensor
           ...history.map((record) {
             return Card(
               child: ListTile(

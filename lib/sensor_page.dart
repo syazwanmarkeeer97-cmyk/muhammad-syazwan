@@ -12,7 +12,7 @@ class SensorPage extends StatefulWidget {
 }
 
 class _SensorPageState extends State<SensorPage> {
-  // Sambungan ke Firebase Realtime Database
+  // extend to Firebase Realtime Database
   final DatabaseReference _myDatabase = FirebaseDatabase.instanceFor(
     app: Firebase.app(),
     databaseURL:
@@ -21,7 +21,7 @@ class _SensorPageState extends State<SensorPage> {
 
   StreamSubscription<DatabaseEvent>? _sensorSubscription;
 
-  // null bermaksud bacaan belum diterima
+  // null means reading not accepted
   double? temperature;
   double? humidity;
   int? gas;
@@ -29,7 +29,7 @@ class _SensorPageState extends State<SensorPage> {
 
   String databaseStatus = 'wait data from Firebase';
 
-  // Baca data sensor daripada Firebase
+  // read data sensor from Firebase
   void _readSensor() {
     _sensorSubscription = _myDatabase.onValue.listen(
           (DatabaseEvent event) {
