@@ -88,34 +88,34 @@ class _SensorPageState extends State<SensorPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Sensor Monitoring'),
+        title: Text('Sensor Monitoring'),
         backgroundColor: Colors.deepPurpleAccent,
         foregroundColor: Colors.black,
       ),
 
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding:EdgeInsets.all(16),
 
         children: [
           Text(
             databaseStatus,
-            style: const TextStyle(
+            style:TextStyle(
               color: Colors.deepPurple,
               fontWeight: FontWeight.bold,
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
 
           Card(
             child: ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.thermostat,
                 color: Colors.red,
               ),
-              title: const Text('Temperature'),
-              subtitle: const Text('DHT22'),
+              title: Text('Temperature'),
+              subtitle:Text('DHT22'),
               trailing: Text(
                 temperature == null ? '-- °C' : '$temperature °C',
               ),
@@ -125,12 +125,12 @@ class _SensorPageState extends State<SensorPage> {
 
           Card(
             child: ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.water_drop,
                 color: Colors.blue,
               ),
-              title: const Text('Humidity'),
-              subtitle: const Text('DHT22'),
+              title: Text('Humidity'),
+              subtitle:  Text('DHT22'),
               trailing: Text(
                 humidity == null ? '-- %' : '$humidity %',
               ),
@@ -140,12 +140,12 @@ class _SensorPageState extends State<SensorPage> {
 
           Card(
             child: ListTile(
-              leading: const Icon(
+              leading:  Icon(
                 Icons.cloud_outlined,
                 color: Colors.orange,
               ),
-              title: const Text('Gas / Smoke'),
-              subtitle: const Text('MQ-2 -  ADC'),
+              title: Text('Gas / Smoke'),
+              subtitle:  Text('MQ-2 -  ADC'),
               trailing: Text(
                 gas == null ? '--' : '$gas',
               ),

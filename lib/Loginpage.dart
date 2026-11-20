@@ -27,26 +27,26 @@ class _LoginpageState extends State<Loginpage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
-        title: const Text('Smart Lab Safety'),
+        title:Text('Smart Lab Safety'),
         centerTitle: true,
       ),
 
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:EdgeInsets.all(16.0),
 
         child: ListView(
           children: [
-            const SizedBox(height: 30),
+             SizedBox(height: 30),
 
-            const Icon(
+             Icon(
               Icons.health_and_safety,
               size: 80,
               color: Colors.deepPurple,
             ),
 
-            const SizedBox(height: 20),
+             SizedBox(height: 20),
 
-            const Text(
+             Text(
               'LOGIN',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -55,16 +55,16 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ),
 
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
 
-            const Text(
+             Text(
               'Hi please insert your email',
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 30),
+             SizedBox(height: 30),
 
-            // Ruang email
+            // email to field
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -75,9 +75,9 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ),
 
-            const SizedBox(height: 20),
+             SizedBox(height: 20),
 
-            // Ruang password
+            // password to field
             TextField(
               controller: passwordController,
               obscureText: true,
@@ -88,15 +88,15 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ),
 
-            const SizedBox(height: 30),
+             SizedBox(height: 30),
 
-            // Butang login
+            // Button login
             ElevatedButton(
               onPressed: () async {
                 if (emailController.text.trim().isEmpty ||
                     passwordController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                     SnackBar(
                       content: Text('please insert email and password'),
                     ),
                   );
@@ -104,7 +104,7 @@ class _LoginpageState extends State<Loginpage> {
                 }
 
                 try {
-                  // Semak email dan password dengan Firebase
+                  // please check email and password with Firebase
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: emailController.text.trim(),
                     password: passwordController.text,
@@ -112,17 +112,17 @@ class _LoginpageState extends State<Loginpage> {
 
                   if (!context.mounted) return;
 
-                  // Jika login berjaya, buka dashboard
+                  // if login success, open dashboard
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DashboardPage(),
+                      builder: (context) =>  DashboardPage(),
                     ),
                   );
                 } on FirebaseAuthException catch (e) {
                   if (!context.mounted) return;
 
-                  // Papar mesej jika login gagal
+                  // displogin gagal
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Fail login: ${e.message}'),
@@ -130,22 +130,22 @@ class _LoginpageState extends State<Loginpage> {
                   );
                 }
               },
-              child: const Text('LOGIN'),
+              child:  Text('LOGIN'),
             ),
 
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
 
-            // Butang untuk buka halaman register
+            // button page for register
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const RegisterPage(),
+                    builder: (context) => RegisterPage(),
                   ),
                 );
               },
-              child: const Text('Dont have account? Register'),
+              child:Text('Dont have account? Register'),
             ),
           ],
         ),

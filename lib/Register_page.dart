@@ -26,18 +26,18 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
-        title: const Text('Register'),
+        title: Text('Register'),
         centerTitle: true,
       ),
 
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
 
         child: ListView(
           children: [
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
-            const Text(
+            Text(
               'CREATE ACCOUNT',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -46,50 +46,50 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
 
-            const Text(
+            Text(
               'Insert Email and Password',
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Email',
                 hintText: 'Enter your email',
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Password',
                 hintText: 'Enter your password',
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             TextField(
               controller: confirmPasswordController,
               obscureText: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Confirm Password',
                 hintText: 'Enter password again',
               ),
             ),
 
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
             ElevatedButton(
               onPressed: () async {
@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     passwordController.text.isEmpty ||
                     confirmPasswordController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('please fill in all field'),
                     ),
                   );
@@ -106,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 if (passwordController.text != confirmPasswordController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('Password not same'),
                     ),
                   );
@@ -122,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   if (!context.mounted) return;
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('Account succesfully register'),
                     ),
                   );
@@ -138,16 +138,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   );
                 }
               },
-              child: const Text('REGISTER'),
+              child:Text('REGISTER'),
             ),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
 
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Already register? Login'),
+              child:Text('Already register? Login'),
             ),
           ],
         ),
